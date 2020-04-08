@@ -1,4 +1,5 @@
 // npx ts-node ./src/add_date.ts --path=/Volumes/limi_hd/pic/2020/test
+// --path=xxx 需要处理的文件目录
 // --deep=true 递归处理
 import getFiles from './get_files'
 import fs from 'fs'
