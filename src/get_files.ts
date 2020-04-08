@@ -9,9 +9,9 @@ interface IProps{
   deep?: boolean, // 是否递归获取
 }
 
-
 /**
- * 获取目标文件夹下的指定文件，支持深层查找
+ * 获取目标文件夹下的指定文件
+ * 返回文件绝对路径列表
  */
 function getFiles(props: IProps) {
   const files: Array<string> = []
