@@ -4,7 +4,12 @@
   "description": "file handler",
   "main": "all-files.js",
   "scripts": {
-    "bus": "npx ts-node ./lib/bus.ts",
+    "dev": "npx tsc -w",
+    "build": "npx tsc",
+    "bus": "node ./dist/bus",
+    "keepass": "npx ts-node ./lib/keepass.ts --haha=$npm_config_haha",
+    "date": "node ./dist/add_file_date.js",
+    "mini-image": "node ./dist/image-optimize.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,15 +26,20 @@
     "@types/chance": "^1.0.10",
     "@types/lodash": "^4.14.164",
     "@types/node": "^13.11.0",
+    "@types/sharp": "^0.27.1",
     "@types/yargs": "^15.0.4",
     "ts-node": "^8.8.2",
-    "typescript": "^3.8.3",
+    "typescript": "^4.1.2",
     "yargs": "^15.3.1"
   },
   "dependencies": {
     "chalk": "^4.1.0",
     "chance": "^1.1.4",
-    "lodash": "^4.17.20",
-    "moment": "^2.24.0"
+    "dayjs": "^1.10.4",
+    "exif": "^0.6.0",
+    "exif-reader": "^1.0.3",
+    "lodash": "^4.17.21",
+    "react": "^17.0.1",
+    "sharp": "^0.29.1"
   }
 }

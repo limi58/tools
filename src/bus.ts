@@ -2,7 +2,7 @@ import childProcess from 'child_process'
 import chalk from 'chalk'
 import fs from 'fs'
 import readline from 'readline'
-import getFiles from './get_files'
+import { getFiles } from './get_files'
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -35,7 +35,7 @@ function to(type: 'mac' | 'phone') {
   }
   const dateIst = new Date()
   const year = dateIst.getFullYear()
-  const month = dateIst.getMonth()
+  const month = dateIst.getMonth() + 1
   const date = dateIst.getDate()
   if (type === 'mac') {
     rl.question(
@@ -49,7 +49,7 @@ function to(type: 'mac' | 'phone') {
             `rsync -ravz --progress --exclude=".*" u0_a140@mi:~/storage/shared/DCIM /Volumes/limi_hd/phone${year}${month}${date}`,
             { stdio: 'inherit' },
           )
-          .toString()
+          ?.toString()
         // 构建结束
         logInfo(`send done, ${(Date.now() - now) / 1000}s`)
       },
@@ -70,10 +70,12 @@ function to(type: 'mac' | 'phone') {
         logInfo('sending...')
         const now = Date.now()
 
-        childProcess.execSync(
-          `rsync -ravz --progress --exclude=".*" /Volumes/limi_hd/to-phone u0_a140@mi:~/storage/shared/DCIM/temp`,
-          { stdio: 'inherit' },
-        )
+        childProcess
+          .execSync(
+            `rsync -ravz --progress --exclude=".*" /Volumes/limi_hd/to-phone u0_a140@mi:~/storage/shared/DCIM/temp`,
+            { stdio: 'inherit' },
+          )
+          ?.toString()
         // 构建结束
         logInfo(`send done, ${(Date.now() - now) / 1000}s`)
       },
