@@ -7,7 +7,7 @@ export const rl = readline.createInterface({
 
 export function q(msg: string) {
   return new Promise<string>((resolve, reject) => {
-    rl.question(`${msg} > `, (input) => {
+    rl.question(`${msg} >`, (input) => {
       resolve(input)
     })
   })

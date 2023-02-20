@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "description": "file handler",
   "main": "all-files.js",
+  "type": "commonjs",
   "scripts": {
     "dev": "npx tsc -w",
     "build": "npx tsc",
     "bus": "node ./dist/bus",
-    "keepass": "npx ts-node ./lib/keepass.ts --haha=$npm_config_haha",
-    "date": "node ./dist/add_file_date.js",
+    "keepass": "ts-node ./lib/keepass.ts --haha=$npm_config_haha",
+    "add-filename-date": "ts-node ./src/add-filename-date.ts",
     "mini-image": "node ./dist/image-optimize.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -25,11 +26,10 @@
   "devDependencies": {
     "@types/chance": "^1.0.10",
     "@types/lodash": "^4.14.164",
-    "@types/node": "^13.11.0",
+    "@types/node": "^18.14.0",
     "@types/sharp": "^0.27.1",
     "@types/yargs": "^15.0.4",
-    "ts-node": "^8.8.2",
-    "typescript": "^4.1.2",
+    "typescript": "^4.9.5",
     "yargs": "^15.3.1"
   },
   "dependencies": {
@@ -39,7 +39,6 @@
     "exif": "^0.6.0",
     "exif-reader": "^1.0.3",
     "lodash": "^4.17.21",
-    "react": "^17.0.1",
     "sharp": "^0.29.1"
   }
 }

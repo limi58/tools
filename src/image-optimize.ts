@@ -3,7 +3,7 @@ import { statSync, copyFileSync } from 'fs'
 import path from 'path'
 import childProcess from 'child_process'
 import util from 'util'
-import { getFiles } from './get_files'
+import { getFiles } from './get-files'
 import { q, rl } from './service'
 
 const exec = util.promisify(childProcess.exec)

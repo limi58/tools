@@ -2,7 +2,7 @@ import childProcess from 'child_process'
 import chalk from 'chalk'
 import fs from 'fs'
 import readline from 'readline'
-import { getFiles } from './get_files'
+import { getFiles } from './get-files'
 
 const rl = readline.createInterface({
   input: process.stdin,
