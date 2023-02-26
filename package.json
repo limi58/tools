@@ -3,31 +3,42 @@
   "version": "1.0.0",
   "description": "file handler",
   "main": "all-files.js",
+  "type": "commonjs",
+  "engines": {
+    "node": ">= 16.0.0",
+    "pnpm": ">= 7.0.0"
+  },
   "scripts": {
+    "dev": "npx tsc -w",
+    "build": "npx tsc",
+    "bus": "node ./dist/bus",
+    "keepass": "ts-node ./lib/keepass.ts --haha=$npm_config_haha",
+    "add-filename-date": "ts-node ./src/add-filename-date.ts",
+    "mini-image": "node ./dist/image-optimize.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/limi58/file_handler.git"
   },
-  "author": "",
+  "author": "limi58",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/limi58/file_handler/issues"
   },
   "homepage": "https://github.com/limi58/file_handler#readme",
   "devDependencies": {
-    "@types/chance": "^1.0.10",
-    "@types/node": "^13.11.0",
+    "@types/lodash": "^4.14.164",
+    "@types/node": "^18.14.0",
+    "@types/sharp": "^0.27.1",
     "@types/yargs": "^15.0.4",
-    "ts-node": "^8.8.2",
-    "typescript": "^3.8.3",
+    "typescript": "^4.9.5",
     "yargs": "^15.3.1"
   },
   "dependencies": {
-    "@types/lodash": "^4.14.149",
-    "chance": "^1.1.4",
-    "lodash": "^4.17.15",
-    "moment": "^2.24.0"
+    "chalk": "^5.2.0",
+    "dayjs": "^1.10.4",
+    "exif": "^0.6.0",
+    "lodash": "^4.17.21"
   }
 }
