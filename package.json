@@ -4,6 +4,10 @@
   "description": "file handler",
   "main": "all-files.js",
   "type": "commonjs",
+  "engines": {
+    "node": ">= 16.0.0",
+    "pnpm": ">= 7.0.0"
+  },
   "scripts": {
     "dev": "npx tsc -w",
     "build": "npx tsc",
@@ -24,7 +28,6 @@
   },
   "homepage": "https://github.com/limi58/file_handler#readme",
   "devDependencies": {
-    "@types/chance": "^1.0.10",
     "@types/lodash": "^4.14.164",
     "@types/node": "^18.14.0",
     "@types/sharp": "^0.27.1",
@@ -33,12 +36,9 @@
     "yargs": "^15.3.1"
   },
   "dependencies": {
-    "chalk": "^4.1.0",
-    "chance": "^1.1.4",
+    "chalk": "^5.2.0",
     "dayjs": "^1.10.4",
     "exif": "^0.6.0",
-    "exif-reader": "^1.0.3",
-    "lodash": "^4.17.21",
-    "sharp": "^0.29.1"
+    "lodash": "^4.17.21"
   }
 }

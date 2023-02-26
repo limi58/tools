@@ -9,7 +9,7 @@ import { q, rl } from './service'
 const exec = util.promisify(childProcess.exec)
 
 const options = {
-  maxWidth: 2000,
+  maxWidth: 4000,
   imgDir: '',
   noHandleMinSize: 250,
   distFormat: 'HEIC',
@@ -134,7 +134,7 @@ async function main() {
     throw new Error('please must input these question')
   }
 
-  console.log('===============')
+  console.log('======= please check ========')
   console.log(
     `image max width: ${options.maxWidth}\nimage base dir: ${options.imgDir}\nno handle size: ${options.noHandleMinSize}\n`,
   )

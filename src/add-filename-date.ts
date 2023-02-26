@@ -1,18 +1,14 @@
-// npx ts-node ./src/add_date.ts --path=/Volumes/limi_hd/pic/2020/test
-// --path=xxx 需要处理的文件目录
-// --deep=true 递归处理
 import { getFiles } from './get-files'
 import fs from 'fs'
-// import yargs from 'yargs'
 import dayjs from 'dayjs'
 import path from 'path'
-import exif from 'exif'
+// import exif from 'exif'
 import { q, rl } from './service'
 
-const ExifImage = exif.ExifImage
+// const ExifImage = exif.ExifImage
 
-let MAX_YEAR = 0
-let USE_YEAR = 0
+// let MAX_YEAR = 3000
+// let USE_YEAR = 3000
 
 main()
 
@@ -110,9 +106,9 @@ function getImageFileName(fileUrl: string, fileIdx: number) {
     fileIdx: number
   }) {
     let dayjsIst = dayjs(params.originMs)
-    if (dayjsIst.year() >= MAX_YEAR) {
-      dayjsIst = dayjsIst.year(USE_YEAR)
-    }
+    // if (dayjsIst.year() >= MAX_YEAR) {
+    //   dayjsIst = dayjsIst.year(USE_YEAR)
+    // }
     const uniqueFileName = `${dayjsIst.format(
       'YYYY-MM-DD',
     )}-${params.fileIdx.toString(36)}`
@@ -124,19 +120,38 @@ function getImageFileName(fileUrl: string, fileIdx: number) {
   }
 }
 
+const verify = (params: { picPath: string }) => {
+  if (!params.picPath.trim()) {
+    return {
+      status: false,
+      msg: 'dir path empty',
+    }
+  }
+  return {
+    status: true,
+  }
+}
+
 async function main() {
   // /Volumes/limi_hd/pic/2030
   // addDate('/Volumes/limi_hd/pic/done')
   // addDate('/Users/limi/temp')
-  const picPath = await q('where is files dir path')
-  const maxYear = +(await q('max year'))
-  const useYear = +(await q('use year'))
-  MAX_YEAR = maxYear
-  USE_YEAR = useYear
+  const picPath = await q('where is files dir path, like: /User/pic')
+  // const maxYear = +(await q('max year'))
+  // const useYear = +(await q('use year'))
+  // MAX_YEAR = maxYear
+  // USE_YEAR = useYear
+  const verifyRes = verify({ picPath })
+  if (!verifyRes.status) {
+    console.log(verifyRes.msg)
+    rl.close()
+    return
+  }
   console.log('==== please check ====')
-  console.log(
-    `files dir path: ${picPath}\nmax year: ${MAX_YEAR}\nuse year: ${USE_YEAR}\n`,
-  )
+  // console.log(
+  //   `files dir path: ${picPath}\nmax year: ${MAX_YEAR}\nuse year: ${USE_YEAR}\n`,
+  // )
+  console.log(`files dir path: ${picPath}\n`)
   console.log('======================')
   await q(
     'please check the above info, and backup your files, then press enter to continue...',
