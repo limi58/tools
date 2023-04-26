@@ -42,7 +42,7 @@ export function getFiles(props: IProps) {
     const realDirs = filterDirs.map((item) => path.join(pathname, item))
     realDirs.forEach((item) => {
       if (fs.statSync(item).isDirectory()) {
-        if (innerProps.deep) {
+        if (props.deep) {
           getAllFilesInner({
             excludeExp: innerProps.excludeExp,
             pathname: item,
