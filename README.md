@@ -1,49 +1,13 @@
-# file utils for nodejs
+# 自用高频小工具
 
-## install
+## Tool list
 
-git clone this repo, then `pnpm i`
+- 1.随机双色球
+- 2.图片批量转 heic
+- 3.图片批量转 webp
 
-## usage
+图片处理基于 [libvips](https://github.com/libvips/libvips), 必须先安装：
 
-- `npm run add-filename-date`
-
-with some prompt, specific dir files name will be renamed by date and random string, the date is file create date
-
-for example, dir path is `/User/pic`:
-
+```bash
+sudo apt install libvips
 ```
-/User/pic/1.jpg
-/User/pic/2.png
-/User/pic/3.zip
-```
-
-will rename to
-
-```
-/User/pic/2023-02-22-1a.jpg
-/User/pic/2018-01-11-aa.png
-/User/pic/2022-01-01-2b.zip
-```
-
-- `npm run optimize-image`
-
-with some prompt, specific dir files will reduce file size, current support jpeg, jpg, heic, png(to heic)
-
-for example, dir path is `/User/pic`:
-
-```
-/User/pic/1.jpg
-/User/pic/2.png
-/User/pic/3.heic
-```
-
-will transform to
-
-```
-/User/pic/optimize-dist/1.jpg
-/User/pic/optimize-dist/2.heic
-/User/pic/optimize-dist/3.heic
-```
-
-base on [libvips](https://github.com/libvips/libvips), must install it

@@ -1,4 +1,4 @@
-package webp
+package heic
 
 import (
 	"fmt"
@@ -11,8 +11,8 @@ import (
 	"tools/utils"
 )
 
-const ext = "webp"
-const skipKb = 2
+const ext = "heic"
+const skipKb = 250
 
 func Main() {
 	var dir string
@@ -61,7 +61,7 @@ func handleFile(file *utils.FileItem, targetDir string) error {
 
 	// 开始处理
 	targetFilePath := filepath.Join(targetDir, getFileNameWithoutExt(file.Path)+"."+ext)
-	cmd := exec.Command("vips", "webpsave", file.Path, targetFilePath, "--Q=80", "--effort=6")
+	cmd := exec.Command("vips", "heifsave", file.Path, targetFilePath, "--Q=50", "--effort=9")
 
 	_, err := cmd.Output()
 

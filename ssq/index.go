@@ -3,6 +3,7 @@ package ssq
 import (
 	"fmt"
 	"math/rand/v2"
+	"os"
 	"sort"
 	"strconv"
 	"strings"
@@ -15,10 +16,11 @@ const blueNum = 1
 
 func Main() {
 	var input string
-	fmt.Print("Enter gen count: ")
+	fmt.Print("生成几注 > ")
 	fmt.Scanln(&input)
 	if input == "" {
-		panic("no input date")
+		fmt.Println("请输入具体数字")
+		os.Exit(1)
 	}
 	inputInt, _ := strconv.Atoi(input)
 	list := make([][]string, 0, inputInt)
