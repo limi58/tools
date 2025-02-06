@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 type FileItem struct {
@@ -88,4 +89,15 @@ func ExitIfErr(err error) {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+}
+
+// 获取不包含后缀的文件名
+func GetFileNameWithoutExt(path string) string {
+	// 获取文件名（包含后缀）
+	fileNameWithExt := filepath.Base(path)
+	// 获取文件后缀，如 .png
+	ext := filepath.Ext(fileNameWithExt)
+	// 去除后缀
+	fileName := strings.TrimSuffix(fileNameWithExt, ext)
+	return fileName
 }
