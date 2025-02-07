@@ -3,9 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
-	"tools/heic"
+	"tools/img"
 	"tools/ssq"
-	"tools/webp"
 )
 
 func main() {
@@ -24,8 +23,8 @@ func main() {
 	case "1":
 		ssq.Main()
 	case "2":
-		heic.Main()
+		img.Main("heic")
 	case "3":
-		webp.Main()
+		img.Main("webp")
 	}
 }
