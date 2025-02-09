@@ -1,5 +1,7 @@
 # 自用高频小工具
 
+执行 `go run main.go` 会进入引导
+
 ## Tool list
 
 - 1.随机双色球
