@@ -8,6 +8,7 @@ import (
 )
 
 type FileItem struct {
+	// 文件的完整链接
 	Path string
 	Info os.FileInfo
 }
@@ -42,7 +43,7 @@ func ForEachFiles(cfg *ForEachFilesCfg) error {
 		walkFunc = func(path string, info os.FileInfo, err error) error {
 			if err != nil {
 				fmt.Printf("访问路径 %s 时发生错误: %v\n", path, err)
-				return nil // 或 return err 如果你想在遇到错误时立即停止
+				return nil
 			}
 
 			// 排除目录本身，只处理文件
@@ -60,7 +61,7 @@ func ForEachFiles(cfg *ForEachFilesCfg) error {
 		walkFunc = func(path string, info os.FileInfo, err error) error {
 			if err != nil {
 				fmt.Printf("访问路径 %s 时发生错误: %v\n", path, err)
-				return nil // 或 return err 如果你想在遇到错误时立即停止
+				return nil
 			}
 
 			// 只处理当前目录下的文件，不递归子目录，Dir 返回元素的所在目录
