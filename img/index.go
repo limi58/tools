@@ -61,6 +61,7 @@ func Main(imgType string) {
 		IsRecursion: false,
 		Cb: func(file *utils.FileItem) error {
 			fileName := file.Info.Name()
+			// 这里获取的是带.的
 			ext := filepath.Ext(file.Info.Name())
 			ext = strings.ToLower(ext[1:])
 			// 过滤文件，只允许图片被处理

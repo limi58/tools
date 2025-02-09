@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"math/rand/v2"
 	"os"
 	"path/filepath"
 	"strings"
@@ -101,4 +102,18 @@ func GetFileNameWithoutExt(path string) string {
 	// 去除后缀
 	fileName := strings.TrimSuffix(fileNameWithExt, ext)
 	return fileName
+}
+
+// 生成随机字符串
+func GetRanStr(length int) string {
+	if length <= 0 {
+		return ""
+	}
+
+	const letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
+	b := make([]byte, length)
+	for i := range b {
+		b[i] = letters[rand.IntN(len(letters))]
+	}
+	return string(b)
 }
