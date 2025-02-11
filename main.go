@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	// fmt.Println(filepath.Join("/haha/xixi", "gege", ".png"))
+	// fmt.Println(runtime.NumCPU())
 	var input string
 	fmt.Println("1.随机双色球")
 	fmt.Println("2.批量转 heic")

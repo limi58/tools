@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"sync"
 	"time"
@@ -15,6 +16,8 @@ import (
 	"github.com/samber/lo"
 	"golang.org/x/sync/semaphore"
 )
+
+var cpuNum = runtime.NumCPU()
 
 type cfgMapItem struct {
 	targetExt      string
@@ -28,13 +31,13 @@ var cfgMap = map[string]cfgMapItem{
 		targetExt:      "heic",
 		skipKb:         250,
 		handleExt:      []string{"jpg", "jpeg", "png", "heic"},
-		concurrencyNum: 4,
+		concurrencyNum: cpuNum,
 	},
 	"webp": {
 		targetExt:      "webp",
 		skipKb:         2,
 		handleExt:      []string{"jpg", "jpeg", "png", "webp"},
-		concurrencyNum: 4,
+		concurrencyNum: cpuNum,
 	},
 }
 
@@ -101,8 +104,8 @@ func Main(imgType string) {
 	}
 	wg.Wait()
 	fmt.Println("---------------------")
-	timeS := fmt.Sprintf("%.1f", float64(time.Since(timeStart).Milliseconds()/1000))
-	fmt.Println("done， 耗时（s)：", timeS)
+	timeS := fmt.Sprintf("%.1f", float64(time.Since(timeStart).Milliseconds())/1000)
+	fmt.Println("done， 耗时：", timeS, "s")
 	if err != nil {
 		fmt.Println(err)
 		return
