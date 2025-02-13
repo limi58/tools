@@ -24,6 +24,7 @@ type cfgMapItem struct {
 	skipKb         int
 	handleExt      []string
 	concurrencyNum int
+	quality        string
 }
 
 var cfgMap = map[string]cfgMapItem{
@@ -32,25 +33,33 @@ var cfgMap = map[string]cfgMapItem{
 		skipKb:         250,
 		handleExt:      []string{"jpg", "jpeg", "png", "heic"},
 		concurrencyNum: cpuNum,
+		quality:        "50",
 	},
 	"webp": {
 		targetExt:      "webp",
 		skipKb:         2,
 		handleExt:      []string{"jpg", "jpeg", "png", "webp"},
 		concurrencyNum: cpuNum,
+		quality:        "80",
 	},
 }
 
 var cfgItem cfgMapItem
 var lock = sync.Mutex{}
 var doneNum = 0
+var quality string
 
 func Main(imgType string) {
+	cfgItem = cfgMap[imgType]
 	var dir string
 	fmt.Print("图片文件夹 > ")
 	fmt.Scanln(&dir)
+	fmt.Printf("输出质量（默认%s）> ", cfgItem.quality)
+	fmt.Scanln(&quality)
+	if quality == "" {
+		quality = cfgItem.quality
+	}
 	timeStart := time.Now()
-	cfgItem = cfgMap[imgType]
 	// 创建输出目录
 	targetDir := filepath.Join(dir, cfgItem.targetExt)
 	if _, err := os.Stat(targetDir); os.IsNotExist(err) {
@@ -126,9 +135,9 @@ func handleFile(file *utils.FileItem, targetDir string, fileList []*utils.FileIt
 	var cmd *exec.Cmd
 	switch cfgItem.targetExt {
 	case "heic":
-		cmd = exec.Command("vips", "heifsave", file.Path, targetFilePath, "--Q=50", "--effort=9")
+		cmd = exec.Command("vips", "heifsave", file.Path, targetFilePath, fmt.Sprintf("--Q=%s", quality), "--effort=9")
 	case "webp":
-		cmd = exec.Command("vips", "webpsave", file.Path, targetFilePath, "--Q=80", "--effort=6")
+		cmd = exec.Command("vips", "webpsave", file.Path, targetFilePath, fmt.Sprintf("--Q=%s", quality), "--effort=6")
 	}
 	_, err := cmd.CombinedOutput()
 	if err != nil {
