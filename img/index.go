@@ -139,9 +139,10 @@ func handleFile(file *utils.FileItem, targetDir string, fileList []*utils.FileIt
 	case "webp":
 		cmd = exec.Command("vips", "webpsave", file.Path, targetFilePath, fmt.Sprintf("--Q=%s", quality), "--effort=6")
 	}
-	_, err := cmd.CombinedOutput()
+	b, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Println(err)
+		fmt.Println(string(b))
 	}
 	addDoneNum()
 	fmt.Printf("✅ 已完成 %d/%d %s \n", doneNum, len(fileList), fileName)
