@@ -9,6 +9,7 @@ import (
 	"tools/utils"
 )
 
+// 获取文件创建时间，兼容多个操作系统
 func getFileCt(filePath string) string {
 	fileInfo, err := os.Stat(filePath)
 	if err != nil {
@@ -16,7 +17,12 @@ func getFileCt(filePath string) string {
 	}
 
 	stat := fileInfo.Sys().(*syscall.Stat_t)
-	createTime := time.Unix(int64(stat.Ctim.Sec), int64(stat.Ctim.Nsec))
+	var createTime time.Time
+	if stat.Birthtimespec.Sec != 0 {
+		createTime = time.Unix(stat.Birthtimespec.Sec, stat.Birthtimespec.Nsec)
+	} else {
+		createTime = time.Unix(stat.Ctimespec.Sec, stat.Ctimespec.Nsec)
+	}
 
 	return createTime.Format(time.DateOnly)
 }
