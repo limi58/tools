@@ -48,12 +48,36 @@ var cfgItem cfgMapItem
 var lock = sync.Mutex{}
 var doneNum = 0
 var quality string
+var lastPathFile = filepath.Join(os.TempDir(), "debugmi_tools_last_img_path.txt")
+
+func getLastPath() string {
+	content, err := os.ReadFile(lastPathFile)
+	if err != nil {
+		return ""
+	}
+	return string(content)
+}
+
+func saveLastPath(path string) {
+	_ = os.WriteFile(lastPathFile, []byte(path), 0644)
+}
 
 func Main(imgType string) {
 	cfgItem = cfgMap[imgType]
 	var dir string
-	fmt.Print("图片文件夹 > ")
+	lastPath := getLastPath()
+	if lastPath != "" {
+		fmt.Printf("图片文件夹（上次：%s）> ", lastPath)
+	} else {
+		fmt.Print("图片文件夹 > ")
+	}
 	fmt.Scanln(&dir)
+	if dir == "" && lastPath != "" {
+		dir = lastPath
+	}
+	if dir != "" {
+		saveLastPath(dir)
+	}
 	fmt.Printf("输出质量（默认%s）> ", cfgItem.quality)
 	fmt.Scanln(&quality)
 	if quality == "" {
