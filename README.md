@@ -12,5 +12,5 @@
 图片处理基于 [libvips](https://github.com/libvips/libvips), 必须先安装：
 
 ```bash
-sudo apt install libvips
+sudo apt install libvips libvips-tools
 ```
