@@ -53,6 +53,11 @@ type Props struct {
 }
 
 func Main(props Props) {
+	if props.Dir == "" {
+		fmt.Println("未输入目录")
+		return
+	}
+
 	utils.ForEachFiles(&utils.ForEachFilesCfg{
 		Dir:         props.Dir,
 		IsRecursion: false,
