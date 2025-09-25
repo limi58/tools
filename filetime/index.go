@@ -35,12 +35,12 @@ func getFileCt(filePath string) (string, error) {
 	switch runtime.GOOS {
 	case "darwin": // macOS
 		// macOS 提供 Birthtimespec，如果在 macOS 上编译就取消注释下面
-		// ts := stat.Birthtimespec
-		// creationTime = time.Unix(ts.Sec, ts.Nsec)
+		ts := stat.Birthtimespec
+		creationTime = time.Unix(ts.Sec, ts.Nsec)
 	case "linux":
 		// !! 这不是真正的创建时间！ Linux 标准 stat 不提供 Birthtime，回退到 Ctim (状态更改时间)
-		ts := stat.Ctim
-		creationTime = time.Unix(ts.Sec, ts.Nsec)
+		// ts := stat.Ctim
+		// creationTime = time.Unix(ts.Sec, ts.Nsec)
 	default:
 		return "", fmt.Errorf("当前操作系统 (%s) 不支持此方法获取创建时间", runtime.GOOS)
 	}
@@ -48,13 +48,13 @@ func getFileCt(filePath string) (string, error) {
 	return creationTime.Format(time.DateOnly), nil
 }
 
-func Main() {
-	var dir string
-	fmt.Print("要处理的文件夹 > ")
-	fmt.Scanln(&dir)
+type Props struct {
+	Dir string
+}
 
+func Main(props Props) {
 	utils.ForEachFiles(&utils.ForEachFilesCfg{
-		Dir:         dir,
+		Dir:         props.Dir,
 		IsRecursion: false,
 		Cb: func(file *utils.FileItem) error {
 			timeStr, err := getFileCt(file.Path)
@@ -62,7 +62,7 @@ func Main() {
 				return nil
 			}
 			newFileName := fmt.Sprintf("%s-%s", timeStr, utils.GetRanStr(4)) + filepath.Ext(file.Path)
-			newFilePath := filepath.Join(dir, newFileName)
+			newFilePath := filepath.Join(props.Dir, newFileName)
 			err = os.Rename(file.Path, newFilePath)
 			if err != nil {
 				fmt.Println(err)

@@ -48,44 +48,28 @@ var cfgItem cfgMapItem
 var lock = sync.Mutex{}
 var doneNum = 0
 var quality string
-var lastPathFile = filepath.Join(os.TempDir(), "debugmi_tools_last_img_path.txt")
 
-func getLastPath() string {
-	content, err := os.ReadFile(lastPathFile)
-	if err != nil {
-		return ""
-	}
-	return string(content)
+type Props struct {
+	Type    string
+	Dir     string
+	Quality string
 }
 
-func saveLastPath(path string) {
-	_ = os.WriteFile(lastPathFile, []byte(path), 0644)
-}
+func Main(props Props) {
+	cfgItem = cfgMap[props.Type]
+	quality = cfgItem.quality
 
-func Main(imgType string) {
-	cfgItem = cfgMap[imgType]
-	var dir string
-	lastPath := getLastPath()
-	if lastPath != "" {
-		fmt.Printf("图片文件夹（上次：%s）> ", lastPath)
-	} else {
-		fmt.Print("图片文件夹 > ")
+	if props.Quality != "" {
+		quality = props.Quality
 	}
-	fmt.Scanln(&dir)
-	if dir == "" && lastPath != "" {
-		dir = lastPath
-	}
-	if dir != "" {
-		saveLastPath(dir)
-	}
-	fmt.Printf("输出质量（默认%s）> ", cfgItem.quality)
-	fmt.Scanln(&quality)
-	if quality == "" {
-		quality = cfgItem.quality
-	}
+
 	timeStart := time.Now()
 	// 创建输出目录
-	targetDir := filepath.Join(dir, cfgItem.targetExt)
+	if props.Dir == "" {
+		fmt.Println("未输入目录")
+		return
+	}
+	targetDir := filepath.Join(props.Dir, cfgItem.targetExt)
 	if _, err := os.Stat(targetDir); os.IsNotExist(err) {
 		err := os.MkdirAll(targetDir, 0755)
 		utils.ExitIfErr(err)
@@ -93,7 +77,7 @@ func Main(imgType string) {
 	}
 	fileList := make([]*utils.FileItem, 0, 10)
 	err := utils.ForEachFiles(&utils.ForEachFilesCfg{
-		Dir:         dir,
+		Dir:         props.Dir,
 		IsRecursion: false,
 		Cb: func(file *utils.FileItem) error {
 			fileName := file.Info.Name()

@@ -1,6 +1,23 @@
 package main
 
+/**
+
+生成随机双色球：
+go run main.go --tool=ssq --num=5
+
+批量转 webp：
+go run main.go --tool=webp --dir=/Users/admin/Documents/png --quality=80
+
+批量转 heic：
+go run main.go --tool=heic --dir=/Users/admin/Documents/png --quality=50
+
+批量将文件命名为日期：
+go run main.go --tool=filetime --dir=/Users/admin/Documents/png
+
+*/
+
 import (
+	"flag"
 	"fmt"
 	"os"
 	"tools/filetime"
@@ -9,27 +26,33 @@ import (
 )
 
 func main() {
-	// fmt.Println(runtime.NumCPU())
-	var input string
-	fmt.Println("1.随机双色球")
-	fmt.Println("2.批量转 heic")
-	fmt.Println("3.批量转 webp")
-	fmt.Println("4.文件名设为创建日期")
-	fmt.Println("--------------------------")
-	fmt.Print("从以上选一个功能 > ")
-	fmt.Scanln(&input)
-	if input == "" {
-		fmt.Println("请输入具体数字")
+	tool := flag.String("tool", "", "哪个工具")
+
+	// ssq
+	num := flag.Int("num", 0, "生成双色球注数")
+
+	// img
+	dir := flag.String("dir", "", "处理目录")
+	quality := flag.String("quality", "", "处理目录")
+
+	flag.Parse()
+
+	if *tool == "" {
+		fmt.Println("未指定工具")
 		os.Exit(1)
 	}
-	switch input {
-	case "1":
-		ssq.Main()
-	case "2":
-		img.Main("heic")
-	case "3":
-		img.Main("webp")
-	case "4":
-		filetime.Main()
+
+	switch *tool {
+	case "ssq":
+		ssq.Main(ssq.Props{Num: *num})
+	case "heic":
+	case "webp":
+		img.Main(img.Props{
+			Dir:     *dir,
+			Quality: *quality,
+			Type:    *tool,
+		})
+	case "filetime":
+		filetime.Main(filetime.Props{Dir: *dir})
 	}
 }

@@ -1,16 +1,31 @@
 # 自用高频小工具
 
-执行 `go run main.go` 会进入引导
+生成随机双色球：
 
-## Tool list
+go run main.go --tool=ssq --num=5
 
-- 1.随机双色球
-- 2.图片批量转 heic
-- 3.图片批量转 webp
-- 4.批量将文件命名为日期
+批量转 webp：
+
+go run main.go --tool=webp --dir=/Users/admin/Documents/png --quality=80
+
+批量转 heic：
+
+go run main.go --tool=heic --dir=/Users/admin/Documents/png --quality=50
+
+批量将文件命名为日期：
+
+go run main.go --tool=filetime --dir=/Users/admin/Documents/png
 
 图片处理基于 [libvips](https://github.com/libvips/libvips), 必须先安装：
 
+Debian
+
 ```bash
 sudo apt install libvips libvips-tools
+```
+
+MacOS
+
+```bash
+brew install vips
 ```

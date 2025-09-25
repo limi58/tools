@@ -14,17 +14,18 @@ const blueTotal = 16
 const redNum = 6
 const blueNum = 1
 
-func Main() {
-	var input string
-	fmt.Print("生成几注 > ")
-	fmt.Scanln(&input)
-	if input == "" {
+type Props struct {
+	Num int
+}
+
+func Main(props Props) {
+	if props.Num == 0 {
 		fmt.Println("请输入具体数字")
 		os.Exit(1)
 	}
-	inputInt, _ := strconv.Atoi(input)
-	list := make([][]string, 0, inputInt)
-	for i := 0; i < inputInt; i++ {
+
+	list := make([][]string, 0, props.Num)
+	for i := 0; i < props.Num; i++ {
 		list = append(list, getBalls())
 	}
 	output(list)
