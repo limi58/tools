@@ -45,8 +45,7 @@ func main() {
 	switch *tool {
 	case "ssq":
 		ssq.Main(ssq.Props{Num: *num})
-	case "heic":
-	case "webp":
+	case "heic", "webp", "avif":
 		img.Main(img.Props{
 			Dir:     *dir,
 			Quality: *quality,

@@ -42,6 +42,13 @@ var cfgMap = map[string]cfgMapItem{
 		concurrencyNum: cpuNum,
 		quality:        "80",
 	},
+	"avif": {
+		targetExt:      "avif",
+		skipKb:         2,
+		handleExt:      []string{"jpg", "jpeg", "png", "heic", "webp", "avif"},
+		concurrencyNum: cpuNum,
+		quality:        "60",
+	},
 }
 
 var cfgItem cfgMapItem
@@ -56,6 +63,7 @@ type Props struct {
 }
 
 func Main(props Props) {
+	println(props.Type)
 	cfgItem = cfgMap[props.Type]
 	quality = cfgItem.quality
 
@@ -143,9 +151,13 @@ func handleFile(file *utils.FileItem, targetDir string, fileList []*utils.FileIt
 	var cmd *exec.Cmd
 	switch cfgItem.targetExt {
 	case "heic":
+		// effort 9 是最高压缩率
 		cmd = exec.Command("vips", "heifsave", file.Path, targetFilePath, fmt.Sprintf("--Q=%s", quality), "--effort=9")
 	case "webp":
+		println("webp")
 		cmd = exec.Command("vips", "webpsave", file.Path, targetFilePath, fmt.Sprintf("--Q=%s", quality), "--effort=6")
+	case "avif":
+		cmd = exec.Command("vips", "heifsave", file.Path, targetFilePath, fmt.Sprintf("--Q=%s", quality), "--effort=9", "--compression=av1", "--subsample-mode=on")
 	}
 	b, err := cmd.CombinedOutput()
 	if err != nil {
