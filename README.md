@@ -4,6 +4,10 @@
 
 go run main.go --tool=ssq --num=5
 
+批量转 avif：
+
+go run main.go --tool=avif --dir=/Users/admin/Documents/png --quality=60
+
 批量转 webp：
 
 go run main.go --tool=webp --dir=/Users/admin/Documents/png --quality=80
@@ -28,4 +32,12 @@ MacOS
 
 ```bash
 brew install vips
+```
+
+Windows
+
+```bash
+scoop bucket add extras
+scoop update
+scoop install libvips
 ```
