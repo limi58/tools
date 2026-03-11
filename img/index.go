@@ -165,6 +165,12 @@ func handleFile(file *utils.FileItem, targetDir string, fileList []*utils.FileIt
 		fmt.Println(string(b))
 	}
 	addDoneNum()
-	fmt.Printf("✅ 已完成 %d/%d %s \n", doneNum, len(fileList), fileName)
+	info, err := os.Stat(targetFilePath)
+	if err != nil {
+		fmt.Printf("✅ 已完成 %d/%d %s，获取文件大小失败：%v\n", doneNum, len(fileList), fileName, err)
+		return nil
+	}
+	sizeKb := float64(info.Size()) / 1024
+	fmt.Printf("✅ 已完成 %d/%d %s，大小 %.2fkb\n", doneNum, len(fileList), fileName, sizeKb)
 	return nil
 }
