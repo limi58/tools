@@ -7,6 +7,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"time"
 )
 
 const redTotal = 33
@@ -24,11 +25,31 @@ func Main(props Props) {
 		os.Exit(1)
 	}
 
-	list := make([][]string, 0, props.Num)
-	for i := 0; i < props.Num; i++ {
-		list = append(list, getBalls())
+	var list [][]string
+	for {
+		list = make([][]string, 0, props.Num)
+		for i := 0; i < props.Num; i++ {
+			list = append(list, getBalls())
+		}
+		if !blueBallsHaveDuplicate(list) {
+			break
+		}
+		fmt.Println("蓝球重复，即将重新生成")
+		time.Sleep(time.Second)
 	}
 	output(list)
+}
+
+func blueBallsHaveDuplicate(list [][]string) bool {
+	seen := make(map[string]struct{}, len(list))
+	for _, row := range list {
+		blue := row[redNum]
+		if _, ok := seen[blue]; ok {
+			return true
+		}
+		seen[blue] = struct{}{}
+	}
+	return false
 }
 
 func output(list [][]string) {
