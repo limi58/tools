@@ -155,8 +155,9 @@ func handleFile(file *utils.FileItem, targetDir string, fileList []*utils.FileIt
 		cmd = exec.Command("vips", "heifsave", file.Path, targetFilePath, fmt.Sprintf("--Q=%s", quality), "--effort=9")
 	case "webp":
 		println("webp")
-		cmd = exec.Command("vips", "webpsave", file.Path, targetFilePath, fmt.Sprintf("--Q=%s", quality), "--effort=6")
+		cmd = exec.Command("vips", "webpsave", file.Path+"[n=-1]", targetFilePath, fmt.Sprintf("--Q=%s", quality), "--effort=6")
 	case "avif":
+		// [n=-1] 加载全部帧。动画 AVIF 写出依赖 libheif；多数当前版本仍只能得到单帧（libvips#3629）。
 		cmd = exec.Command("vips", "heifsave", file.Path, targetFilePath, fmt.Sprintf("--Q=%s", quality), "--effort=9", "--compression=av1", "--subsample-mode=on")
 	}
 	b, err := cmd.CombinedOutput()
