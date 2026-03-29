@@ -12,6 +12,10 @@ go run main.go --tool=avif --dir=/Users/admin/Documents/png --quality=60
 
 go run main.go --tool=webp --dir=/Users/admin/Documents/png --quality=80
 
+多帧/动画源（如动图）需写出完整动画 webp 时，加上 `--all-frame=1`（会传给 vips 的 `[n=-1]`；默认不加，只处理首帧）：
+
+go run main.go --tool=webp --dir=/Users/admin/Documents/png --quality=80 --all-frame=1
+
 批量转 heic：
 
 go run main.go --tool=heic --dir=/Users/admin/Documents/png --quality=50
