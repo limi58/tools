@@ -34,6 +34,7 @@ func main() {
 	// img
 	dir := flag.String("dir", "", "处理目录")
 	quality := flag.String("quality", "", "处理目录")
+	allFrame := flag.Int("all-frame", 0, "webp：1 时加载全部帧写入动画 webp（默认 0 仅首帧）")
 
 	flag.Parse()
 
@@ -47,9 +48,10 @@ func main() {
 		ssq.Main(ssq.Props{Num: *num})
 	case "heic", "webp", "avif":
 		img.Main(img.Props{
-			Dir:     *dir,
-			Quality: *quality,
-			Type:    *tool,
+			Dir:      *dir,
+			Quality:  *quality,
+			Type:     *tool,
+			AllFrame: *allFrame == 1,
 		})
 	case "filetime":
 		filetime.Main(filetime.Props{Dir: *dir})

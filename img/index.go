@@ -55,17 +55,20 @@ var cfgItem cfgMapItem
 var lock = sync.Mutex{}
 var doneNum = 0
 var quality string
+var webpAllFrames bool
 
 type Props struct {
-	Type    string
-	Dir     string
-	Quality string
+	Type     string
+	Dir      string
+	Quality  string
+	AllFrame bool
 }
 
 func Main(props Props) {
 	println(props.Type)
 	cfgItem = cfgMap[props.Type]
 	quality = cfgItem.quality
+	webpAllFrames = props.AllFrame
 
 	if props.Quality != "" {
 		quality = props.Quality
@@ -155,7 +158,11 @@ func handleFile(file *utils.FileItem, targetDir string, fileList []*utils.FileIt
 		cmd = exec.Command("vips", "heifsave", file.Path, targetFilePath, fmt.Sprintf("--Q=%s", quality), "--effort=9")
 	case "webp":
 		println("webp")
-		cmd = exec.Command("vips", "webpsave", file.Path+"[n=-1]", targetFilePath, fmt.Sprintf("--Q=%s", quality), "--effort=6")
+		src := file.Path
+		if webpAllFrames {
+			src = file.Path + "[n=-1]"
+		}
+		cmd = exec.Command("vips", "webpsave", src, targetFilePath, fmt.Sprintf("--Q=%s", quality), "--effort=6")
 	case "avif":
 		// [n=-1] 加载全部帧。动画 AVIF 写出依赖 libheif；多数当前版本仍只能得到单帧（libvips#3629）。
 		cmd = exec.Command("vips", "heifsave", file.Path, targetFilePath, fmt.Sprintf("--Q=%s", quality), "--effort=9", "--compression=av1", "--subsample-mode=on")
