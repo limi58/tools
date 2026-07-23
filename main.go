@@ -11,6 +11,9 @@ go run main.go --tool=webp --dir=/Users/admin/Documents/png --quality=80
 批量转 heic：
 go run main.go --tool=heic --dir=/Users/admin/Documents/png --quality=50
 
+批量等比缩小图片：
+go run main.go --tool=img_size --dir=/Users/admin/Documents/png --img_size=80
+
 批量将文件命名为日期：
 go run main.go --tool=filetime --dir=/Users/admin/Documents/png
 
@@ -34,6 +37,7 @@ func main() {
 	// img
 	dir := flag.String("dir", "", "处理目录")
 	quality := flag.String("quality", "", "处理目录")
+	imgSize := flag.Int("img_size", 0, "图片等比缩小百分比（1-100）")
 	allFrame := flag.Int("all-frame", 0, "webp：1 时加载全部帧写入动画 webp（默认 0 仅首帧）")
 
 	flag.Parse()
@@ -52,6 +56,11 @@ func main() {
 			Quality:  *quality,
 			Type:     *tool,
 			AllFrame: *allFrame == 1,
+		})
+	case "img_size":
+		img.Resize(img.ResizeProps{
+			Dir:        *dir,
+			Percentage: *imgSize,
 		})
 	case "filetime":
 		filetime.Main(filetime.Props{Dir: *dir})

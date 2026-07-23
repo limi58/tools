@@ -64,6 +64,90 @@ type Props struct {
 	AllFrame bool
 }
 
+type ResizeProps struct {
+	Dir        string
+	Percentage int
+}
+
+var resizeHandleExt = []string{"jpg", "jpeg", "png", "webp", "heic", "avif"}
+
+// Resize 将指定目录第一层的图片按百分比等比缩小，输出到 img_size 子目录。
+func Resize(props ResizeProps) {
+	if props.Dir == "" {
+		fmt.Println("未输入目录")
+		return
+	}
+	if props.Percentage < 1 || props.Percentage > 100 {
+		fmt.Println("img_size 必须是 1-100 的整数")
+		return
+	}
+
+	targetDir := filepath.Join(props.Dir, "img_size")
+	if err := os.MkdirAll(targetDir, 0755); err != nil {
+		fmt.Println("创建输出目录失败:", err)
+		return
+	}
+
+	fileList := make([]*utils.FileItem, 0, 10)
+	err := utils.ForEachFiles(&utils.ForEachFilesCfg{
+		Dir:         props.Dir,
+		IsRecursion: false,
+		Cb: func(file *utils.FileItem) error {
+			ext := strings.TrimPrefix(strings.ToLower(filepath.Ext(file.Info.Name())), ".")
+			if !lo.Contains(resizeHandleExt, ext) {
+				fmt.Println("no allow ext file:", file.Info.Name())
+				return nil
+			}
+			fileList = append(fileList, file)
+			return nil
+		},
+	})
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	if len(fileList) == 0 {
+		fmt.Println("没有需要处理的文件")
+		return
+	}
+
+	timeStart := time.Now()
+	sem := semaphore.NewWeighted(int64(cpuNum))
+	var wg sync.WaitGroup
+	var resizeLock sync.Mutex
+	done := 0
+	scale := fmt.Sprintf("%.2f", float64(props.Percentage)/100)
+	for _, fileItem := range fileList {
+		wg.Add(1)
+		go func(file *utils.FileItem) {
+			defer wg.Done()
+			if err := sem.Acquire(context.TODO(), 1); err != nil {
+				fmt.Println("获取信号量失败:", err)
+				return
+			}
+			defer sem.Release(1)
+
+			fileName := file.Info.Name()
+			fmt.Println("处理中", fileName)
+			targetFilePath := filepath.Join(targetDir, fileName)
+			cmd := exec.Command("vips", "resize", file.Path, targetFilePath, scale)
+			if output, err := cmd.CombinedOutput(); err != nil {
+				fmt.Printf("处理失败 %s: %v\n%s", fileName, err, output)
+				return
+			}
+
+			resizeLock.Lock()
+			done++
+			currentDone := done
+			resizeLock.Unlock()
+			fmt.Printf("✅ 已完成 %d/%d %s\n", currentDone, len(fileList), fileName)
+		}(fileItem)
+	}
+	wg.Wait()
+	fmt.Println("---------------------")
+	fmt.Println("done， 耗时：", fmt.Sprintf("%.1f", float64(time.Since(timeStart).Milliseconds())/1000), "s")
+}
+
 func Main(props Props) {
 	println(props.Type)
 	cfgItem = cfgMap[props.Type]
