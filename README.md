@@ -20,6 +20,10 @@ go run main.go --tool=webp --dir=/Users/admin/Documents/png --quality=80 --all-f
 
 go run main.go --tool=heic --dir=/Users/admin/Documents/png --quality=50
 
+批量等比缩小图片（保留原图，输出到指定目录的 `img_size` 子目录）：
+
+go run main.go --tool=img_size --dir=/Users/admin/Documents/png --img_size=80
+
 批量将文件命名为日期：
 
 go run main.go --tool=filetime --dir=/Users/admin/Documents/png
