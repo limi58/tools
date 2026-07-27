@@ -1,3 +1,5 @@
+// 修改动图尺寸，600 宽，高度自适应
+// vips thumbnail "svip.webp[n=-1]" output.webp[Q=80,effort=6,strip] 600 --height 100000
 package img
 
 import (
